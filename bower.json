@@ -1,0 +1,6 @@
+{
+    "name": "Trekning",
+    "dependencies": {
+        "knockout.js": "= 3.0.x"
+    }
+}
