@@ -3,41 +3,51 @@
 <head>
     <title>Vintrekning</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="js/libs/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="js/libs/bootswatch/cosmo/bootstrap.min.css"/>
+    <style>
+        .intimsone-under button,
+        .intimsone-under .row {
+            margin-bottom: 2em;
+        }
+
+        .intimsone-over {
+            margin-top: 2em;
+        }
+
+        .vinnerliste {
+            font-size: 3em;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
-<h1>For sent til standup-spillets loddtrekning!</h1>
+    <div class="row">
+        <div class="col-md-7 intimsone-under intimsone-over">
+            <button class="btn btn-primary btn-lg" type="button" data-bind="click: trekk">Trekk</button>
 
-<table class="table" data-bind="visible: deltakere().length > 0">
-    <thead>
-    <tr>
-        <th>Navn</th>
-        <th>Antall lodd</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody data-bind="foreach: deltakere">
-    <tr>
-        <td><input class="form-control" placeholder="Navn" data-bind="value: navn"/></td>
-        <td><input class="form-control" placeholder="Antall lodd" data-bind="value: antallLodd"/></td>
-        <!--<td><a href="#" data-bind="click: $root.fjernDeltaker">Fjern</a></td>-->
-        <td><a data-bind="click: $root.fjernDeltaker" class="btn btn-danger" href="#">
-            <i class="icon-trash icon-white"></i>
-            Fjern
-        </a></td>
-    </tr>
-    </tbody>
-</table>
-
-<ul data-bind="foreach: vinnere">
-    <li><span data-bind="text: navn"></span></li>
-</ul>
-
-<!--<p>Random: <span data-bind="text: randomNumber"></span></p>-->
-
-<button data-bind="click: addDeltaker">Legg til deltaker</button>
-<button data-bind="click: trekk">Trekk</button>
+            <!--<h2 data-bind="visible: vinnere().length > 0 ">Vinner<span data-bind="visible: vinnere().length > 1 ">e</span></h2>-->
+            <ul class="list-unstyled vinnerliste" data-bind="foreach: vinnere">
+                <li><span data-bind="text: navn"></span></li>
+            </ul>
+        </div>
+        <div class="col-md-5 intimsone-under">
+            <h2>Deltakere</h2>
+            <button class="btn btn-block" data-bind="click: addDeltaker">Legg til deltaker</button>
+            <div id="deltakere" data-bind="foreach: deltakere">
+                <div class="row">
+                    <div class="col-md-6"><input class="form-control" placeholder="Navn" data-bind="value: navn"/></div>
+                    <div class="col-md-3"><input class="form-control" placeholder="# lodd"
+                                                 data-bind="value: antallLodd"/>
+                    </div>
+                    <div class="col-md-1"><a data-bind="click: $root.fjernDeltaker" class="btn btn-danger" href="#">
+                        <i class="icon-trash icon-white"></i>
+                        Fjern
+                    </a></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
