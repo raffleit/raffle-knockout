@@ -14,7 +14,7 @@ function DeltakerViewModel() {
     self.randomNumber = ko.observable(-1);
 
     self.deltakere = ko.observableArray([
-        new Deltaker("", undefined),
+        new Deltaker("", undefined)
     ]);
 
     self.vinnere = ko.observableArray([]);
