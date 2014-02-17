@@ -20,7 +20,7 @@ function DeltakerViewModel() {
     self.vinnere = ko.observableArray([]);
 
     self.addDeltaker = function () {
-        self.deltakere.push(new Deltaker("", undefined));
+        self.deltakere.splice(0, 0, new Deltaker("", undefined));
     }
 
     self.fjernDeltaker = function (deltaker) {
@@ -57,7 +57,7 @@ function DeltakerViewModel() {
 
         logDeltakere(self.deltakere());
 
-        self.vinnere.push(new Vinner(vinner.navn));
+        self.vinnere.splice(0, 0, new Vinner(vinner.navn));
     }
 }
 ko.applyBindings(new DeltakerViewModel());
