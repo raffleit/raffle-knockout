@@ -3,30 +3,15 @@
 <head>
     <title>Vintrekning</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="js/libs/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="js/libs/bootswatch/cosmo/bootstrap.min.css"/>
-    <style>
-        .intimsone-under button,
-        .intimsone-under .row {
-            margin-bottom: 2em;
-        }
-
-        .intimsone-over {
-            margin-top: 2em;
-        }
-
-        .vinnerliste {
-            font-size: 3em;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="css/app.css"/>
 </head>
 <body>
 <div class="container">
     <div class="row">
         <div class="col-md-7 intimsone-under intimsone-over">
-            <button class="btn btn-primary btn-lg" type="button" data-bind="click: trekk">Trekk</button>
+            <button class="btn btn-success btn-lg" type="button" data-bind="click: trekk">Trekk</button>
 
-            <!--<h2 data-bind="visible: vinnere().length > 0 ">Vinner<span data-bind="visible: vinnere().length > 1 ">e</span></h2>-->
             <ul class="list-unstyled vinnerliste" data-bind="foreach: vinnere">
                 <li><span data-bind="text: navn"></span></li>
             </ul>
@@ -36,7 +21,7 @@
             <button class="btn btn-block" data-bind="click: addDeltaker">Legg til deltaker</button>
             <div id="deltakere" data-bind="foreach: deltakere">
                 <div class="row">
-                    <div class="col-md-6"><input class="form-control" placeholder="Navn" data-bind="value: navn"/></div>
+                    <div class="col-md-6"><input class="form-control" placeholder="Navn" data-bind="value: navn, hasfocus: !navn"/></div>
                     <div class="col-md-3"><input class="form-control" placeholder="# lodd"
                                                  data-bind="value: antallLodd"/>
                     </div>
@@ -50,75 +35,7 @@
     </div>
 </div>
 
-
 <script type='text/javascript' src='js/libs/knockout.js/knockout.js'></script>
-
-<script>
-
-    function Vinner(navn) {
-        var self = this;
-        self.navn = navn;
-    }
-
-    function Deltaker(navn, antallLodd) {
-        var self = this;
-        self.navn = navn;
-        self.antallLodd = ko.observable(antallLodd);
-    }
-
-    function DeltakerViewModel() {
-        var self = this;
-        self.randomNumber = ko.observable(-1);
-
-        self.deltakere = ko.observableArray([
-            new Deltaker("Anders Emil", 3),
-            new Deltaker("Dorotea", 3)
-        ]);
-
-        self.vinnere = ko.observableArray([]);
-
-        self.addDeltaker = function () {
-            self.deltakere.push(new Deltaker("", undefined));
-        }
-
-        self.fjernDeltaker = function (deltaker) {
-            self.deltakere.remove(deltaker);
-        }
-
-        self.trekk = function () {
-            var getWeighedList = function (deltakere) {
-                var weighedList = [];
-                for (var i = 0; i < deltakere.length; i++) {
-                    var deltaker = deltakere[i];
-                    for (var j = 0; j < deltaker.antallLodd(); j++) {
-                        weighedList.push(deltaker);
-                    }
-                }
-                return weighedList;
-            }
-
-            var rand = function (min, max) {
-                return Math.floor(Math.random() * (max - min)) + min;
-            }
-
-            var logDeltakere = function (deltakere) {
-                console.log("Deltakere: ", deltakere);
-            }
-
-            var weighedList = getWeighedList(self.deltakere());
-            self.randomNumber(rand(0, weighedList.length));
-            var vinner = weighedList[self.randomNumber()];
-            logDeltakere(self.deltakere());
-            console.log("Weighed list", weighedList);
-            console.log("Vinner", vinner);
-            vinner.antallLodd(vinner.antallLodd() - 1);
-
-            logDeltakere(self.deltakere());
-
-            self.vinnere.push(new Vinner(vinner.navn));
-        }
-    }
-    ko.applyBindings(new DeltakerViewModel());
-</script>
+<script type='text/javascript' src='js/app.js'></script>
 </body>
 </html>
