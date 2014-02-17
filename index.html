@@ -2,55 +2,112 @@
 <html>
 <head>
     <title>Vintrekning</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="js/libs/bootswatch/cosmo/bootstrap.min.css"/>
 </head>
 <body>
+<div class="container">
+<h1>For sent til standup-spillets loddtrekning!</h1>
 
-<h2>Your seat reservations</h2>
-
-<table>
-    <thead><tr>
-        <th>Navn</th><th>Antall lodd</th><th></th>
-    </tr></thead>
+<table class="table" data-bind="visible: deltakere().length > 0">
+    <thead>
+    <tr>
+        <th>Navn</th>
+        <th>Antall lodd</th>
+        <th></th>
+    </tr>
+    </thead>
     <tbody data-bind="foreach: deltakere">
     <tr>
-        <td><input data-bind="value: navn" /></td>
-        <td><input type="number" data-bind="value: antallLodd" /></td>
-        <td><a href="#" data-bind="click: $root.fjernDeltaker">Remove</a></td>
+        <td><input class="form-control" placeholder="Navn" data-bind="value: navn"/></td>
+        <td><input class="form-control" placeholder="Antall lodd" data-bind="value: antallLodd"/></td>
+        <!--<td><a href="#" data-bind="click: $root.fjernDeltaker">Fjern</a></td>-->
+        <td><a data-bind="click: $root.fjernDeltaker" class="btn btn-danger" href="#">
+            <i class="icon-trash icon-white"></i>
+            Fjern
+        </a></td>
     </tr>
     </tbody>
 </table>
 
+<ul data-bind="foreach: vinnere">
+    <li><span data-bind="text: navn"></span></li>
+</ul>
+
+<!--<p>Random: <span data-bind="text: randomNumber"></span></p>-->
+
 <button data-bind="click: addDeltaker">Legg til deltaker</button>
 <button data-bind="click: trekk">Trekk</button>
+</div>
+
 
 <script type='text/javascript' src='js/libs/knockout.js/knockout.js'></script>
+
 <script>
+
+    function Vinner(navn) {
+        var self = this;
+        self.navn = navn;
+    }
 
     function Deltaker(navn, antallLodd) {
         var self = this;
         self.navn = navn;
-        self.antallLodd = antallLodd;
+        self.antallLodd = ko.observable(antallLodd);
     }
 
     function DeltakerViewModel() {
         var self = this;
+        self.randomNumber = ko.observable(-1);
 
         self.deltakere = ko.observableArray([
-            new Deltaker("", 0),
+            new Deltaker("Anders Emil", 3),
+            new Deltaker("Dorotea", 3)
         ]);
 
-        self.addDeltaker = function() {
-            self.deltakere.push(new Deltaker("", 0));
+        self.vinnere = ko.observableArray([]);
+
+        self.addDeltaker = function () {
+            self.deltakere.push(new Deltaker("", undefined));
         }
 
-        self.fjernDeltaker = function(deltaker) { self.deltakere.remove(deltaker) }
+        self.fjernDeltaker = function (deltaker) {
+            self.deltakere.remove(deltaker);
+        }
 
-        self.trekk = function() {
-            console.log(self.deltakere);
-            console.log(21);
+        self.trekk = function () {
+            var getWeighedList = function (deltakere) {
+                var weighedList = [];
+                for (var i = 0; i < deltakere.length; i++) {
+                    var deltaker = deltakere[i];
+                    for (var j = 0; j < deltaker.antallLodd(); j++) {
+                        weighedList.push(deltaker);
+                    }
+                }
+                return weighedList;
+            }
+
+            var rand = function (min, max) {
+                return Math.floor(Math.random() * (max - min)) + min;
+            }
+
+            var logDeltakere = function (deltakere) {
+                console.log("Deltakere: ", deltakere);
+            }
+
+            var weighedList = getWeighedList(self.deltakere());
+            self.randomNumber(rand(0, weighedList.length));
+            var vinner = weighedList[self.randomNumber()];
+            logDeltakere(self.deltakere());
+            console.log("Weighed list", weighedList);
+            console.log("Vinner", vinner);
+            vinner.antallLodd(vinner.antallLodd() - 1);
+
+            logDeltakere(self.deltakere());
+
+            self.vinnere.push(new Vinner(vinner.navn));
         }
     }
-
     ko.applyBindings(new DeltakerViewModel());
 </script>
 </body>
