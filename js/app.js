@@ -13,18 +13,35 @@ function DeltakerViewModel() {
     var self = this;
     self.randomNumber = ko.observable(-1);
 
-    self.deltakere = ko.observableArray([
-        new Deltaker("", undefined)
-    ]);
+    self.deltakere = ko.observableArray([]);
 
     self.vinnere = ko.observableArray([]);
 
-    self.addDeltaker = function () {
-        self.deltakere.splice(0, 0, new Deltaker("", undefined));
+
+    self.hentFraLocalstorage = function () {
+        var lagredeDeltakere = JSON.parse(localStorage.getItem("deltakere"));
+        var lagredeVinnere = JSON.parse(localStorage.getItem("vinnere"));
+        _.each(lagredeDeltakere, function (deltaker) {
+            self.deltakere.splice(0, 0, new Deltaker(deltaker.navn, deltaker.antallLodd));
+        });
+        _.each(lagredeVinnere, function (vinner) {
+            self.vinnere.splice(0, 0, new Vinner(vinner.navn));
+        });
+    }
+    self.hentFraLocalstorage();
+
+    self.addDeltakerFromForm = function (formElement) {
+        var navn = formElement.elements["navn"].value;
+        var antallLodd = formElement.elements["antallLodd"].value;
+        self.deltakere.splice(0, 0, new Deltaker(navn, parseInt(antallLodd)));
+        formElement.reset();
+        formElement.elements["navn"].focus();
+        self.lagreDeltakere();
     }
 
     self.fjernDeltaker = function (deltaker) {
         self.deltakere.remove(deltaker);
+        self.lagreDeltakere();
     }
 
     self.trekk = function () {
@@ -40,7 +57,9 @@ function DeltakerViewModel() {
         }
 
         var rand = function (min, max) {
-            return Math.floor(Math.random() * (max - min)) + min;
+            var rndNum = Math.floor(Math.random() * (max - min)) + min;
+            console.log("Ny random er", rndNum);
+            return rndNum;
         }
 
         var logDeltakere = function (deltakere) {
@@ -58,6 +77,27 @@ function DeltakerViewModel() {
         logDeltakere(self.deltakere());
 
         self.vinnere.splice(0, 0, new Vinner(vinner.navn));
+
+        self.lagreDeltakere();
+        self.lagreVinnere();
+    }
+
+    self.yellowFadeIn = function(elem) { $(elem).hide().slideDown() }
+
+    self.lagreDeltakere = function(){
+        localStorage.setItem("deltakere", ko.toJSON(self.deltakere));
+    }
+
+    self.lagreVinnere = function() {
+        localStorage.setItem("vinnere", ko.toJSON(self.vinnere));
+    }
+
+    self.reset = function(){
+        self.deltakere([]);
+        self.vinnere([]);
+        localStorage.clear();
     }
 }
+
+
 ko.applyBindings(new DeltakerViewModel());

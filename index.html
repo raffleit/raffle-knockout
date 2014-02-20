@@ -12,30 +12,34 @@
         <div class="col-md-7 intimsone-under intimsone-over">
             <button class="btn btn-success btn-lg" type="button" data-bind="click: trekk">Trekk</button>
 
-            <ul class="list-unstyled vinnerliste" data-bind="foreach: vinnere">
+            <ul class="list-unstyled vinnerliste" data-bind="foreach: {data: vinnere, afterAdd: yellowFadeIn}">
                 <li><span data-bind="text: navn"></span></li>
             </ul>
         </div>
         <div class="col-md-5 intimsone-under">
             <h2>Deltakere</h2>
-            <button class="btn btn-block" data-bind="click: addDeltaker">Legg til deltaker</button>
-            <div id="deltakere" data-bind="foreach: deltakere">
-                <div class="row">
-                    <div class="col-md-6"><input class="form-control" placeholder="Navn" data-bind="value: navn, hasfocus: !navn"/></div>
-                    <div class="col-md-3"><input class="form-control" placeholder="# lodd"
-                                                 data-bind="value: antallLodd"/>
-                    </div>
-                    <div class="col-md-1"><a data-bind="click: $root.fjernDeltaker" class="btn btn-danger" href="#">
-                        <i class="icon-trash icon-white"></i>
+            <form data-bind="submit: addDeltakerFromForm">
+                <div class="col-md-6"><input class="form-control" name="navn" placeholder="Navn"/></div>
+                <div class="col-md-3"><input class="form-control" name="antallLodd" placeholder="# lodd" s/></div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <table class="table" data-bind="foreach: deltakere">
+                <tr>
+                    <td data-bind="text: navn"></td>
+                    <td data-bind="text: antallLodd"></td>
+                    <td><a data-bind="click: $root.fjernDeltaker" href="#">
                         Fjern
-                    </a></div>
-                </div>
-            </div>
+                    </a></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
+<div class="reset"><a href="#" data-bind="click: $root.reset">reset</a></div>
 
 <script type='text/javascript' src='js/libs/knockout.js/knockout.js'></script>
+<script type='text/javascript' src='js/libs/jquery/dist/jquery.min.js'></script>
+<script type='text/javascript' src='js/libs/underscore/underscore.js'></script>
 <script type='text/javascript' src='js/app.js'></script>
 </body>
 </html>
