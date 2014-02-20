@@ -38,10 +38,16 @@ function DeltakerViewModel() {
     self.addDeltakerFromForm = function (formElement) {
         var navn = formElement.elements["navn"].value;
         var antallLodd = formElement.elements["antallLodd"].value;
-        self.deltakere.splice(0, 0, new Deltaker(navn, parseInt(antallLodd)));
-        formElement.reset();
-        formElement.elements["navn"].focus();
-        self.lagreDeltakere();
+
+        var isNumeric = !isNaN(antallLodd);
+        var navnTomt = navn === "";
+        if (!(navnTomt || isNumeric)) {
+            self.deltakere.splice(0, 0, new Deltaker(navn, parseInt(antallLodd)));
+            formElement.reset();
+            formElement.elements["navn"].focus();
+            self.lagreDeltakere();
+        }
+        alert("Fyll ut ordentlig, a!");
     }
 
     self.fjernDeltaker = function (deltaker) {
