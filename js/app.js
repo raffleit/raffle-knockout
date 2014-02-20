@@ -11,12 +11,9 @@ function Deltaker(navn, antallLodd) {
 
 function DeltakerViewModel() {
     var self = this;
-    self.randomNumber = ko.observable(-1);
 
     self.deltakere = ko.observableArray([]);
-
     self.vinnere = ko.observableArray([]);
-
 
     self.hentFraLocalstorage = function () {
         var lagredeDeltakere = JSON.parse(localStorage.getItem("deltakere"));
@@ -56,25 +53,11 @@ function DeltakerViewModel() {
             return weighedList;
         }
 
-        var rand = function (min, max) {
-            var rndNum = Math.floor(Math.random() * (max - min)) + min;
-            console.log("Ny random er", rndNum);
-            return rndNum;
-        }
-
-        var logDeltakere = function (deltakere) {
-            console.log("Deltakere: ", deltakere);
-        }
-
         var weighedList = getWeighedList(self.deltakere());
-        self.randomNumber(rand(0, weighedList.length));
-        var vinner = weighedList[self.randomNumber()];
-        logDeltakere(self.deltakere());
-        console.log("Weighed list", weighedList);
-        console.log("Vinner", vinner);
-        vinner.antallLodd(vinner.antallLodd() - 1);
+        var randomNum = Math.floor(Math.random() * weighedList.length);
+        var vinner = weighedList[randomNum];
 
-        logDeltakere(self.deltakere());
+        vinner.antallLodd(vinner.antallLodd() - 1);
 
         self.vinnere.splice(0, 0, new Vinner(vinner.navn));
 
@@ -82,7 +65,7 @@ function DeltakerViewModel() {
         self.lagreVinnere();
     }
 
-    self.yellowFadeIn = function(elem) { $(elem).hide().slideDown() }
+    self.slideDown = function(elem) { $(elem).hide().slideDown() }
 
     self.lagreDeltakere = function(){
         localStorage.setItem("deltakere", ko.toJSON(self.deltakere));
