@@ -10,7 +10,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-7 intimsone-under intimsone-over">
-            <button class="btn btn-success btn-lg" type="button" data-bind="click: trekk">Trekk</button>
+            <button class="btn btn-success btn-lg" type="button" data-bind="click: trekk, enable: isDrawable()">Trekk</button>
 
             <ul class="list-unstyled vinnerliste" data-bind="foreach: {data: vinnere, afterAdd: slideDown}">
                 <li><span data-bind="text: navn"></span></li>

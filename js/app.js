@@ -27,6 +27,14 @@ function DeltakerViewModel() {
     }
     self.hentFraLocalstorage();
 
+    self.isDrawable = function () {
+        var totaltAntallLodd = _.reduce(self.deltakere(), function (memo, deltaker) {
+            return memo + deltaker.antallLodd()
+        }, 0);
+        console.log(totaltAntallLodd);
+        return totaltAntallLodd > 0;
+    }
+
     self.addDeltakerFromForm = function (formElement) {
         var navn = formElement.elements["navn"].value;
         var antallLodd = formElement.elements["antallLodd"].value;
@@ -65,17 +73,19 @@ function DeltakerViewModel() {
         self.lagreVinnere();
     }
 
-    self.slideDown = function(elem) { $(elem).hide().slideDown() }
+    self.slideDown = function (elem) {
+        $(elem).hide().slideDown()
+    }
 
-    self.lagreDeltakere = function(){
+    self.lagreDeltakere = function () {
         localStorage.setItem("deltakere", ko.toJSON(self.deltakere));
     }
 
-    self.lagreVinnere = function() {
+    self.lagreVinnere = function () {
         localStorage.setItem("vinnere", ko.toJSON(self.vinnere));
     }
 
-    self.reset = function(){
+    self.reset = function () {
         self.deltakere([]);
         self.vinnere([]);
         localStorage.clear();
