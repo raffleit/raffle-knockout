@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
@@ -29,6 +29,23 @@ module.exports = function(grunt) {
             }
         },
 
+        htmlhint: {
+            build: {
+                options: {
+                    'tag-pair': true,
+                    'tagname-lowercase': true,
+                    'attr-lowercase': true,
+                    'attr-value-double-quotes': true,
+                    'doctype-first': true,
+                    'spec-char-escape': true,
+                    'id-unique': true,
+                    'head-script-disabled': true,
+                    'style-disabled': true
+                },
+                src: ['app/index.html']
+            }
+        },
+
         watch: {
             files: ['<%= jshint.files %>'],
             tasks: ['jshint']
@@ -38,6 +55,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
+    grunt.loadNpmTasks('grunt-htmlhint');
 
-    grunt.registerTask('default', ['jshint', 'requirejs']);
+    grunt.registerTask('default', ['htmlhint', 'jshint', 'requirejs']);
 }
