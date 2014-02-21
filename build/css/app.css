@@ -1,0 +1,17 @@
+.intimsone-under button,
+.intimsone-under .row {
+    margin-bottom: 2em;
+}
+.intimsone-over {
+    margin-top: 2em;
+}
+.vinnerliste {
+    font-size: 3em;
+}
+.reset {
+    position:fixed;
+    top:5px;
+    right:0px;
+    height:20px;
+    width:60px;
+}

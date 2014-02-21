@@ -1,3 +1,5 @@
-js/libs/
 *.iml
 .idea/
+node_modules/
+app/js/libs/
+build.txt
