@@ -41,16 +41,10 @@ define(['knockout', 'jquery', 'underscore', 'trekkUtils'], function (ko, $, _, t
             var navn = formElement.elements.navn.value;
             var antallLodd = formElement.elements.antallLodd.value;
 
-            var isNumeric = !isNaN(antallLodd);
-            var navnGyldig = navn !== "";
-            if (navnGyldig && isNumeric) {
-                self.deltakere.splice(0, 0, new Deltaker(navn, parseInt(antallLodd)));
-                formElement.reset();
-                formElement.elements.navn.focus();
-                self.lagreDeltakere();
-            } else {
-                alert("Fyll ut ordentlig, a!");
-            }
+            self.deltakere.splice(0, 0, new Deltaker(navn, parseInt(antallLodd)));
+            formElement.reset();
+            formElement.elements.navn.focus();
+            self.lagreDeltakere();
         };
 
         self.fjernDeltaker = function (deltaker) {
