@@ -1,4 +1,4 @@
-define(['knockout', 'jquery', 'underscore'], function (ko, $, _) {
+define(['knockout', 'jquery', 'underscore', 'trekkUtils'], function (ko, $, _, trekkUtils) {
     "use strict";
 
     function Vinner(navn) {
@@ -59,23 +59,9 @@ define(['knockout', 'jquery', 'underscore'], function (ko, $, _) {
         };
 
         self.trekk = function () {
-            var getWeighedList = function (deltakere) {
-                var weighedList = [];
-                for (var i = 0; i < deltakere.length; i++) {
-                    var deltaker = deltakere[i];
-                    for (var j = 0; j < deltaker.antallLodd(); j++) {
-                        weighedList.push(deltaker);
-                    }
-                }
-                return weighedList;
-            };
-
-            var weighedList = getWeighedList(self.deltakere());
-            var randomNum = Math.floor(Math.random() * weighedList.length);
-            var vinner = weighedList[randomNum];
+            var vinner = trekkUtils.trekkVinner(self.deltakere());
 
             vinner.antallLodd(vinner.antallLodd() - 1);
-
             self.vinnere.splice(0, 0, new Vinner(vinner.navn));
 
             self.lagreDeltakere();
