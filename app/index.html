@@ -15,7 +15,7 @@
         </ul>
     </div>
     <div class="row">
-        <div id="trekningDiv" class="col-md-7 intimsone-under intimsone-over .hidden-sm .hidden-md .hidden-xs">
+        <div id="trekningDiv" class="col-md-7 intimsone-under intimsone-over" style="display: none">
             <button class="btn btn-success btn-lg" type="button" data-bind="click: trekk, enable: isDrawable()">Trekk
             </button>
 
@@ -23,24 +23,18 @@
                 <li><span data-bind="text: navn"></span></li>
             </ul>
         </div>
-        <div id="deltakereDiv" class="col-md-5 intimsone-under">
+        <div id="deltakereDiv" class="col-md-5 intimsone-under" style="display: none">
             <h2>Deltakere</h2>
 
-            <form data-bind="submit: addDeltakerFromForm">
-                <div class="row">
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="navn" placeholder="Navn" required="required"/>
-                    </div>
-                    <div class="col-md-4">
-                        <input type="number" class="form-control" name="antallLodd" placeholder="# lodd"
-                               required="required"/>
-                    </div>
-                    <div class="col-md-1">
-                        <button type="submit" class="btn btn-primary">+</button>
-                    </div>
-                </div>
-            </form>
-            <table class="table" data-bind="foreach: deltakere">
+            <table class="table">
+                <thead>
+                <tr>
+                    <td>Navn</td>
+                    <td># lodd</td>
+                    <td></td>
+                </tr>
+                </thead>
+                <tbody data-bind="foreach: deltakere">
                 <tr>
                     <td data-bind="text: navn"></td>
                     <td data-bind="text: antallLodd"></td>
@@ -48,7 +42,23 @@
                         Fjern
                     </a></td>
                 </tr>
+                </tbody>
             </table>
+            <form data-bind="submit: addDeltakerFromForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="navn" placeholder="Navn" required="required"
+                               autofocus/>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" class="form-control" name="antallLodd" placeholder="# lodd"
+                               required="required" autocomplete="off"/>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="submit" class="btn btn-primary">+</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
