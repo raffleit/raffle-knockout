@@ -8,6 +8,10 @@
 </head>
 <body>
 <div class="container">
+    <ul class="nav nav-pills hidden-lg hidden-md">
+        <li><a href="#">Deltakere</a></li>
+        <li><a href="#">Vinnere</a></li>
+    </ul>
     <div class="row">
         <div class="col-md-7 intimsone-under intimsone-over">
             <button class="btn btn-success btn-lg" type="button" data-bind="click: trekk, enable: isDrawable()">Trekk
@@ -20,7 +24,7 @@
         <div class="col-md-5 intimsone-under">
             <h2>Deltakere</h2>
 
-            <form role="form" data-bind="submit: addDeltakerFromForm">
+            <form data-bind="submit: addDeltakerFromForm">
                 <div class="row">
                     <div class="col-md-6">
                         <input type="text" class="form-control" name="navn" placeholder="Navn" required="required"/>
