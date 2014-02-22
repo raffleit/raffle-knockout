@@ -26,6 +26,21 @@
         <div id="deltakereDiv" class="col-md-5 intimsone-under" style="display: none">
             <h2>Deltakere</h2>
 
+            <form data-bind="submit: addDeltakerFromForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="navn" placeholder="Navn" required="required"
+                               autofocus/>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" class="form-control" name="antallLodd" placeholder="# lodd"
+                               required="required" autocomplete="off"/>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="submit" class="btn btn-primary">+</button>
+                    </div>
+                </div>
+            </form>
             <table class="table">
                 <thead>
                 <tr>
@@ -44,21 +59,6 @@
                 </tr>
                 </tbody>
             </table>
-            <form data-bind="submit: addDeltakerFromForm">
-                <div class="row">
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="navn" placeholder="Navn" required="required"
-                               autofocus/>
-                    </div>
-                    <div class="col-md-4">
-                        <input type="number" class="form-control" name="antallLodd" placeholder="# lodd"
-                               required="required" autocomplete="off"/>
-                    </div>
-                    <div class="col-md-1">
-                        <button type="submit" class="btn btn-primary">+</button>
-                    </div>
-                </div>
-            </form>
         </div>
     </div>
 </div>
