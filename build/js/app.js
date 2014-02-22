@@ -35,6 +35,11 @@ define(['knockout', 'jquery', 'underscore', 'trekkUtils', 'sammy'], function (ko
                     $("#deltakere").show();
                 }
             });
+
+            this._checkFormSubmission = function(form) {
+                return (false);
+            };
+
             this.get('', function() { this.app.runRoute('get', '#Full'); });
         }).run();
 
