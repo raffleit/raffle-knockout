@@ -21,7 +21,7 @@ define(['knockout', 'jquery', 'underscore', 'trekkUtils', 'sammy'], function (ko
         self.deltakere = ko.observableArray([]);
         self.vinnere = ko.observableArray([]);
 
-        Sammy(function() {
+        new Sammy(function() {
             this.get('#:tab', function() {
                 self.chosenTabId(this.params.tab);
                 if(this.params.tab==="Trekning"){
@@ -35,10 +35,10 @@ define(['knockout', 'jquery', 'underscore', 'trekkUtils', 'sammy'], function (ko
                     $("#deltakere").show();
                 }
             });
-            this.get('', function() { this.app.runRoute('get', '#Full') });
+            this.get('', function() { this.app.runRoute('get', '#Full'); });
         }).run();
 
-        self.goToTab = function(tab) { location.hash = tab };
+        self.goToTab = function(tab) { location.hash = tab; };
 
         self.hentFraLocalstorage = function () {
             var lagredeDeltakere = JSON.parse(localStorage.getItem("deltakere"));

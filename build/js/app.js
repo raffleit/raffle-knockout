@@ -1,4 +1,4 @@
-define(['knockout', 'jquery', 'underscore', 'trekkUtils'], function (ko, $, _, trekkUtils) {
+define(['knockout', 'jquery', 'underscore', 'trekkUtils', 'sammy'], function (ko, $, _, trekkUtils, Sammy) {
     "use strict";
 
     function Vinner(navn) {
@@ -15,8 +15,30 @@ define(['knockout', 'jquery', 'underscore', 'trekkUtils'], function (ko, $, _, t
     function DeltakerViewModel() {
         var self = this;
 
+        self.tabs = ['Deltakere', 'Trekning'];
+        self.chosenTabId = ko.observable();
+
         self.deltakere = ko.observableArray([]);
         self.vinnere = ko.observableArray([]);
+
+        new Sammy(function() {
+            this.get('#:tab', function() {
+                self.chosenTabId(this.params.tab);
+                if(this.params.tab==="Trekning"){
+                    $("#deltakere").hide();
+                    $("#trekning").show();
+                } else if(this.params.tab==="Deltakere"){
+                    $("#trekning").hide();
+                    $("#deltakere").show();
+                } else if(this.params.tab==="Full"){
+                    $("#trekning").show();
+                    $("#deltakere").show();
+                }
+            });
+            this.get('', function() { this.app.runRoute('get', '#Full'); });
+        }).run();
+
+        self.goToTab = function(tab) { location.hash = tab; };
 
         self.hentFraLocalstorage = function () {
             var lagredeDeltakere = JSON.parse(localStorage.getItem("deltakere"));
@@ -41,16 +63,10 @@ define(['knockout', 'jquery', 'underscore', 'trekkUtils'], function (ko, $, _, t
             var navn = formElement.elements.navn.value;
             var antallLodd = formElement.elements.antallLodd.value;
 
-            var isNumeric = !isNaN(antallLodd);
-            var navnGyldig = navn !== "";
-            if (navnGyldig && isNumeric) {
-                self.deltakere.splice(0, 0, new Deltaker(navn, parseInt(antallLodd)));
-                formElement.reset();
-                formElement.elements.navn.focus();
-                self.lagreDeltakere();
-            } else {
-                alert("Fyll ut ordentlig, a!");
-            }
+            self.deltakere.splice(0, 0, new Deltaker(navn, parseInt(antallLodd)));
+            formElement.reset();
+            formElement.elements.navn.focus();
+            self.lagreDeltakere();
         };
 
         self.fjernDeltaker = function (deltaker) {

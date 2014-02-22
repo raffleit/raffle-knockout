@@ -8,8 +8,14 @@
 </head>
 <body>
 <div class="container">
+    <div class="hidden-lg">
+        <ul class="nav nav-pills">
+            <li data-bind="css: { active: 'Deltakere' == $root.chosenTabId() }"><a href="#Deltakere" data-bind="click: $root.goToTab('Deltakere')">Deltakere</a></li>
+            <li data-bind="css: { active: 'Trekning' == $root.chosenTabId() }"><a href="#Trekning" data-bind="click: $root.goToTab('Trekning')">Trekning</a></li>
+        </ul>
+    </div>
     <div class="row">
-        <div class="col-md-7 intimsone-under intimsone-over">
+        <div id="trekning" class="col-md-7 intimsone-under intimsone-over">
             <button class="btn btn-success btn-lg" type="button" data-bind="click: trekk, enable: isDrawable()">Trekk
             </button>
 
@@ -17,13 +23,22 @@
                 <li><span data-bind="text: navn"></span></li>
             </ul>
         </div>
-        <div class="col-md-5 intimsone-under">
+        <div id="deltakere" class="col-md-5 intimsone-under">
             <h2>Deltakere</h2>
 
             <form data-bind="submit: addDeltakerFromForm">
-                <div class="col-md-6"><input class="form-control" name="navn" placeholder="Navn"/></div>
-                <div class="col-md-3"><input class="form-control" name="antallLodd" placeholder="# lodd" s/></div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="navn" placeholder="Navn" required="required"/>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" class="form-control" name="antallLodd" placeholder="# lodd"
+                               required="required"/>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="submit" class="btn btn-primary">+</button>
+                    </div>
+                </div>
             </form>
             <table class="table" data-bind="foreach: deltakere">
                 <tr>
