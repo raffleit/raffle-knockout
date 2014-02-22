@@ -1,4 +1,4 @@
-define(['knockout', 'jquery', 'underscore', 'trekkUtils'], function (ko, $, _, trekkUtils) {
+define(['knockout', 'jquery', 'underscore', 'trekkUtils', 'sammy'], function (ko, $, _, trekkUtils, Sammy) {
     "use strict";
 
     function Vinner(navn) {
@@ -15,8 +15,30 @@ define(['knockout', 'jquery', 'underscore', 'trekkUtils'], function (ko, $, _, t
     function DeltakerViewModel() {
         var self = this;
 
+        self.tabs = ['Deltakere', 'Trekning'];
+        self.chosenTabId = ko.observable();
+
         self.deltakere = ko.observableArray([]);
         self.vinnere = ko.observableArray([]);
+
+        Sammy(function() {
+            this.get('#:tab', function() {
+                self.chosenTabId(this.params.tab);
+                if(this.params.tab==="Trekning"){
+                    $("#deltakere").hide();
+                    $("#trekning").show();
+                } else if(this.params.tab==="Deltakere"){
+                    $("#trekning").hide();
+                    $("#deltakere").show();
+                } else if(this.params.tab==="Full"){
+                    $("#trekning").show();
+                    $("#deltakere").show();
+                }
+            });
+            this.get('', function() { this.app.runRoute('get', '#Full') });
+        }).run();
+
+        self.goToTab = function(tab) { location.hash = tab };
 
         self.hentFraLocalstorage = function () {
             var lagredeDeltakere = JSON.parse(localStorage.getItem("deltakere"));

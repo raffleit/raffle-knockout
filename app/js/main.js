@@ -5,7 +5,8 @@
         "paths": {
             "jquery": "libs/jquery/jquery.min",
             "knockout": "libs/knockout.js/knockout",
-            "underscore": "libs/underscore/underscore"
+            "underscore": "libs/underscore/underscore",
+            "sammy": "libs/sammy/lib/sammy"
 
         },
         "shim": {
@@ -17,6 +18,9 @@
             },
             "underscore": {
                 "exports": "_"
+            },
+            "sammy": {
+                "exports": "sammy"
             }
         }
     });
