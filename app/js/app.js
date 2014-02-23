@@ -99,9 +99,12 @@ define(['knockout', 'jquery', 'underscore', 'trekkUtils', 'sammy'], function (ko
         };
 
         self.reset = function () {
-            self.deltakere([]);
-            self.vinnere([]);
-            localStorage.clear();
+            var reallyReset = confirm("This will wipe all participants and winners. Do you want to continue?");
+            if (reallyReset) {
+                self.deltakere([]);
+                self.vinnere([]);
+                localStorage.clear();
+            }
         };
     }
 
