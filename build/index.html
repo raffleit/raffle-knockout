@@ -29,19 +29,17 @@
             <form data-bind="submit: addDeltakerFromForm">
                 <div class="row">
                     <div class="col-md-6">
-                        <input type="text" class="form-control" name="navn" placeholder="Navn" required="required"
-                               autofocus/>
+                        <input type="text" class="form-control" name="navn" placeholder="Navn" required autofocus/>
                     </div>
                     <div class="col-md-4">
-                        <input type="number" class="form-control" name="antallLodd" placeholder="# lodd"
-                               required="required" autocomplete="off"/>
+                        <input type="number" class="form-control" name="antallLodd" placeholder="# lodd" required autocomplete="off"/>
                     </div>
                     <div class="col-md-1">
                         <button type="submit" class="btn btn-primary">+</button>
                     </div>
                 </div>
             </form>
-            <table class="table">
+            <table class="table" data-bind="visible: deltakere().length > 0">
                 <thead>
                 <tr>
                     <td>Navn</td>
