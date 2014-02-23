@@ -44,13 +44,31 @@ define(['knockout', 'jquery', 'underscore', 'trekkUtils', 'sammy'], function (ko
         };
 
         self.addDeltakerFromForm = function (formElement) {
-            var navn = formElement.elements.navn.value;
-            var antallLodd = formElement.elements.antallLodd.value;
 
-            self.deltakere.splice(0, 0, new Deltaker(navn, parseInt(antallLodd)));
-            formElement.reset();
-            formElement.elements.navn.focus();
-            self.lagreDeltakere();
+            var validateForm = function ($navn, $antallLodd) {
+                var valid = true;
+
+                if ($navn.val().length === 0) {
+                    $navn.closest('.form-group').addClass("has-error");
+                    valid = false;
+                }
+                if (isNaN($antallLodd.val())) {
+                    $antallLodd.closest('.form-group').addClass("has-error");
+                    valid = false;
+                }
+                return valid;
+            };
+
+            var $navn = $(formElement).find("input[name='navn']");
+            var $antallLodd = $(formElement).find("input[name='antallLodd']");
+
+            if (validateForm($navn, $antallLodd)) {
+                $(formElement).find(".has-error").removeClass("has-error");
+                self.deltakere.splice(0, 0, new Deltaker($navn.val(), parseInt($antallLodd.val())));
+                formElement.reset();
+                $navn.focus();
+                self.lagreDeltakere();
+            }
         };
 
         self.fjernDeltaker = function (deltaker) {
