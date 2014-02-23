@@ -14,8 +14,8 @@
             <li data-bind="css: { active: 'Drawing' == $root.chosenTabId() }"><a href="#Drawing">Draw</a></li>
         </ul>
     </div>
-    <div class="row">
-        <div id="drawingDiv" class="col-md-7 intimate-zone-under intimate-zone-over" style="display: none">
+    <div class="row intimate-zone-over">
+        <div id="drawingDiv" class="col-md-7 intimate-zone-under" style="display: none">
             <button class="btn btn-success btn-lg" type="button" data-bind="click: draw, enable: isDrawable()">Draw
             </button>
 
