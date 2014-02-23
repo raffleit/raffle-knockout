@@ -15,11 +15,11 @@
         </ul>
     </div>
     <div class="row">
-        <div id="trekningDiv" class="col-md-7 intimsone-under intimsone-over" style="display: none">
+        <div id="trekningDiv" class="col-md-7 intimsone-under intimate-zone-over" style="display: none">
             <button class="btn btn-success btn-lg" type="button" data-bind="click: trekk, enable: isDrawable()">Trekk
             </button>
 
-            <ul class="list-unstyled vinnerliste" data-bind="foreach: {data: vinnere, afterAdd: slideDown}">
+            <ul class="list-unstyled winnerlist" data-bind="foreach: {data: vinnere, afterAdd: slideDown}">
                 <li><span data-bind="text: navn"></span></li>
             </ul>
         </div>

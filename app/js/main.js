@@ -25,26 +25,27 @@
         }
     });
 
-    define(['knockout', 'app', 'sammy'], function (ko, DeltakerViewModel, Sammy) {
-        var deltakerViewModel = new DeltakerViewModel();
+    define(['knockout', 'app', 'sammy'], function (ko, AppViewModel, Sammy) {
+        var appViewModel = new AppViewModel();
 
-        var xs = window.matchMedia("(max-width: 749px)").matches;
-        var sm = window.matchMedia("(min-width: 750px) and (max-width: 969px)").matches;
         var md = window.matchMedia("(min-width: 970px) and (max-width: 1170px)").matches;
         var lg = window.matchMedia("(min-width: 1170px)").matches;
 
+        var $participantsDiv = $("#participantsDiv");
+        var $drawingDiv = $("#drawingDiv");
+
         new Sammy(function () {
             this.get('#:tab', function () {
-                deltakerViewModel.chosenTabId(this.params.tab);
-                if (this.params.tab === "Trekning") {
-                    $("#deltakereDiv").hide();
-                    $("#trekningDiv").show();
-                } else if (this.params.tab === "Deltakere") {
-                    $("#trekningDiv").hide();
-                    $("#deltakereDiv").show();
+                appViewModel.chosenTabId(this.params.tab);
+                if (this.params.tab === "Drawing") {
+                    $participantsDiv.hide();
+                    $drawingDiv.show();
+                } else if (this.params.tab === "Participants") {
+                    $drawingDiv.hide();
+                    $participantsDiv.show();
                 } else if (this.params.tab === "Full") {
-                    $("#trekningDiv").show();
-                    $("#deltakereDiv").show();
+                    $drawingDiv.show();
+                    $participantsDiv.show();
                 }
             });
 
@@ -56,10 +57,10 @@
                 if (lg || md) {
                     this.app.runRoute('get', '#Full');
                 } else {
-                    this.app.runRoute('get', '#Deltakere');
+                    this.app.runRoute('get', '#Participants');
                 }
             });
         }).run();
-        ko.applyBindings(deltakerViewModel);
+        ko.applyBindings(appViewModel);
     });
 })();

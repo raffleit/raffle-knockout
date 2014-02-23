@@ -18,23 +18,23 @@ define(['knockout', 'jquery', 'underscore', 'trekkUtils', 'sammy'], function (ko
         self.chosenTabId = ko.observable();
 
         self.deltakere = ko.observableArray([]);
-        self.vinnere = ko.observableArray([]);
+        self.winners = ko.observableArray([]);
 
         self.goToTab = function (tab) {
             location.hash = tab;
         };
 
-        self.hentFraLocalstorage = function () {
+        self.restoreFromLocalstorage = function () {
             var lagredeDeltakere = JSON.parse(localStorage.getItem("deltakere"));
-            var lagredeVinnere = JSON.parse(localStorage.getItem("vinnere"));
+            var lagredeVinnere = JSON.parse(localStorage.getItem("winners"));
             _.each(lagredeDeltakere, function (deltaker) {
                 self.deltakere.splice(0, 0, new Deltaker(deltaker.navn, deltaker.antallLodd));
             });
             _.each(lagredeVinnere, function (vinner) {
-                self.vinnere.splice(0, 0, new Winner(vinner.navn));
+                self.winners.splice(0, 0, new Winner(vinner.navn));
             });
         };
-        self.hentFraLocalstorage();
+        self.restoreFromLocalstorage();
 
         self.isDrawable = function () {
             var totaltAntallLodd = _.reduce(self.deltakere(), function (memo, deltaker) {
@@ -71,42 +71,42 @@ define(['knockout', 'jquery', 'underscore', 'trekkUtils', 'sammy'], function (ko
                 self.deltakere.splice(0, 0, new Deltaker($navn.val(), parseInt($antallLodd.val())));
                 formElement.reset();
                 $navn.focus();
-                self.lagreDeltakere();
+                self.storeParticipants();
             }
         };
 
-        self.fjernDeltaker = function (deltaker) {
+        self.removeParticipant = function (deltaker) {
             self.deltakere.remove(deltaker);
-            self.lagreDeltakere();
+            self.storeParticipants();
         };
 
-        self.trekk = function () {
+        self.draw = function () {
             var vinner = trekkUtils.trekkVinner(self.deltakere());
 
             vinner.antallLodd(vinner.antallLodd() - 1);
-            self.vinnere.splice(0, 0, new Winner(vinner.navn));
+            self.winners.splice(0, 0, new Winner(vinner.navn));
 
-            self.lagreDeltakere();
-            self.lagreVinnere();
+            self.storeParticipants();
+            self.storeWinners();
         };
 
         self.slideDown = function (elem) {
             $(elem).hide().slideDown();
         };
 
-        self.lagreDeltakere = function () {
+        self.storeParticipants = function () {
             localStorage.setItem("deltakere", ko.toJSON(self.deltakere));
         };
 
-        self.lagreVinnere = function () {
-            localStorage.setItem("vinnere", ko.toJSON(self.vinnere));
+        self.storeWinners = function () {
+            localStorage.setItem("winners", ko.toJSON(self.winners));
         };
 
         self.reset = function () {
             var reallyReset = confirm("This will wipe all participants and winners. Do you want to continue?");
             if (reallyReset) {
                 self.deltakere([]);
-                self.vinnere([]);
+                self.winners([]);
                 localStorage.clear();
             }
         };

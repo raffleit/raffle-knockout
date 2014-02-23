@@ -1,116 +1,115 @@
-define(['knockout', 'jquery', 'underscore', 'trekkUtils', 'sammy'], function (ko, $, _, trekkUtils, Sammy) {
+define(['knockout', 'jquery', 'underscore', 'drawUtils'], function (ko, $, _, drawUtils) {
     "use strict";
 
-    function Winner(navn) {
+    function Winner(name) {
         var self = this;
-        self.navn = navn;
+        self.name = name;
     }
 
-    function Deltaker(navn, antallLodd) {
+    function Participant(name, ticketCount) {
         var self = this;
-        self.navn = navn;
-        self.antallLodd = ko.observable(antallLodd);
+        self.name = name;
+        self.ticketCount = ko.observable(ticketCount);
     }
 
-    function DeltakerViewModel() {
+    function AppViewModel() {
         var self = this;
 
         self.chosenTabId = ko.observable();
 
-        self.deltakere = ko.observableArray([]);
-        self.vinnere = ko.observableArray([]);
+        self.participants = ko.observableArray([]);
+        self.winners = ko.observableArray([]);
 
         self.goToTab = function (tab) {
             location.hash = tab;
         };
 
-        self.hentFraLocalstorage = function () {
-            var lagredeDeltakere = JSON.parse(localStorage.getItem("deltakere"));
-            var lagredeVinnere = JSON.parse(localStorage.getItem("vinnere"));
-            _.each(lagredeDeltakere, function (deltaker) {
-                self.deltakere.splice(0, 0, new Deltaker(deltaker.navn, deltaker.antallLodd));
+        self.restoreFromLocalstorage = function () {
+            var storedParticipants = JSON.parse(localStorage.getItem("participants"));
+            var storedWinners = JSON.parse(localStorage.getItem("winners"));
+            _.each(storedParticipants, function (participant) {
+                self.participants.splice(0, 0, new Participant(participant.name, participant.ticketCount));
             });
-            _.each(lagredeVinnere, function (vinner) {
-                self.vinnere.splice(0, 0, new Winner(vinner.navn));
+            _.each(storedWinners, function (winner) {
+                self.winners.splice(0, 0, new Winner(winner.name));
             });
         };
-        self.hentFraLocalstorage();
+        self.restoreFromLocalstorage();
 
         self.isDrawable = function () {
-            var totaltAntallLodd = _.reduce(self.deltakere(), function (memo, deltaker) {
-                return memo + deltaker.antallLodd();
+            var totaltticketCount = _.reduce(self.participants(), function (memo, participant) {
+                return memo + participant.ticketCount();
             }, 0);
-            return totaltAntallLodd > 0;
+            return totaltticketCount > 0;
         };
 
-        self.addDeltakerFromForm = function (formElement) {
-
-            var validateForm = function ($navn, $antallLodd) {
+        self.addParticipantFromForm = function (formElement) {
+            var validateForm = function ($name, $ticketCount) {
                 var isNumber = function(n) {
                     return !isNaN(parseFloat(n)) && isFinite(n);
                 };
 
                 var valid = true;
 
-                if ($navn.val().length === 0) {
-                    $navn.closest('.form-group').addClass("has-error");
+                if ($name.val().length === 0) {
+                    $name.closest('.form-group').addClass("has-error");
                     valid = false;
                 }
-                if (!isNumber($antallLodd.val()) || $antallLodd.val().length === 0) {
-                    $antallLodd.closest('.form-group').addClass("has-error");
+                if (!isNumber($ticketCount.val()) || $ticketCount.val().length === 0) {
+                    $ticketCount.closest('.form-group').addClass("has-error");
                     valid = false;
                 }
                 return valid;
             };
 
-            var $navn = $(formElement).find("input[name='navn']");
-            var $antallLodd = $(formElement).find("input[name='antallLodd']");
+            var $name = $(formElement).find("input[name='name']");
+            var $ticketCount = $(formElement).find("input[name='ticketCount']");
 
-            if (validateForm($navn, $antallLodd)) {
-                $(formElement).find(".has-error").removeClass("has-error");
-                self.deltakere.splice(0, 0, new Deltaker($navn.val(), parseInt($antallLodd.val())));
+            $(formElement).find(".has-error").removeClass("has-error");
+            if (validateForm($name, $ticketCount)) {
+                self.participants.splice(0, 0, new Participant($name.val(), parseInt($ticketCount.val())));
                 formElement.reset();
-                $navn.focus();
-                self.lagreDeltakere();
+                $name.focus();
+                self.storeParticipants();
             }
         };
 
-        self.fjernDeltaker = function (deltaker) {
-            self.deltakere.remove(deltaker);
-            self.lagreDeltakere();
+        self.removeParticipant = function (deltaker) {
+            self.participants.remove(deltaker);
+            self.storeParticipants();
         };
 
-        self.trekk = function () {
-            var vinner = trekkUtils.trekkVinner(self.deltakere());
+        self.draw = function () {
+            var winner = drawUtils.drawWinner(self.participants());
 
-            vinner.antallLodd(vinner.antallLodd() - 1);
-            self.vinnere.splice(0, 0, new Winner(vinner.navn));
+            winner.ticketCount(winner.ticketCount() - 1);
+            self.winners.splice(0, 0, new Winner(winner.name));
 
-            self.lagreDeltakere();
-            self.lagreVinnere();
+            self.storeParticipants();
+            self.storeWinners();
         };
 
         self.slideDown = function (elem) {
             $(elem).hide().slideDown();
         };
 
-        self.lagreDeltakere = function () {
-            localStorage.setItem("deltakere", ko.toJSON(self.deltakere));
+        self.storeParticipants = function () {
+            localStorage.setItem("participants", ko.toJSON(self.participants));
         };
 
-        self.lagreVinnere = function () {
-            localStorage.setItem("vinnere", ko.toJSON(self.vinnere));
+        self.storeWinners = function () {
+            localStorage.setItem("winners", ko.toJSON(self.winners));
         };
 
         self.reset = function () {
             var reallyReset = confirm("This will wipe all participants and winners. Do you want to continue?");
             if (reallyReset) {
-                self.deltakere([]);
-                self.vinnere([]);
+                self.participants([]);
+                self.winners([]);
                 localStorage.clear();
             }
         };
     }
 
-    return DeltakerViewModel;
+    return AppViewModel;
 });
