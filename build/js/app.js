@@ -1,7 +1,7 @@
 define(['knockout', 'jquery', 'underscore', 'trekkUtils', 'sammy'], function (ko, $, _, trekkUtils, Sammy) {
     "use strict";
 
-    function Vinner(navn) {
+    function Winner(navn) {
         var self = this;
         self.navn = navn;
     }
@@ -31,7 +31,7 @@ define(['knockout', 'jquery', 'underscore', 'trekkUtils', 'sammy'], function (ko
                 self.deltakere.splice(0, 0, new Deltaker(deltaker.navn, deltaker.antallLodd));
             });
             _.each(lagredeVinnere, function (vinner) {
-                self.vinnere.splice(0, 0, new Vinner(vinner.navn));
+                self.vinnere.splice(0, 0, new Winner(vinner.navn));
             });
         };
         self.hentFraLocalstorage();
@@ -46,13 +46,17 @@ define(['knockout', 'jquery', 'underscore', 'trekkUtils', 'sammy'], function (ko
         self.addDeltakerFromForm = function (formElement) {
 
             var validateForm = function ($navn, $antallLodd) {
+                var isNumber = function(n) {
+                    return !isNaN(parseFloat(n)) && isFinite(n);
+                };
+
                 var valid = true;
 
                 if ($navn.val().length === 0) {
                     $navn.closest('.form-group').addClass("has-error");
                     valid = false;
                 }
-                if (isNaN($antallLodd.val())) {
+                if (!isNumber($antallLodd.val()) || $antallLodd.val().length === 0) {
                     $antallLodd.closest('.form-group').addClass("has-error");
                     valid = false;
                 }
@@ -80,7 +84,7 @@ define(['knockout', 'jquery', 'underscore', 'trekkUtils', 'sammy'], function (ko
             var vinner = trekkUtils.trekkVinner(self.deltakere());
 
             vinner.antallLodd(vinner.antallLodd() - 1);
-            self.vinnere.splice(0, 0, new Vinner(vinner.navn));
+            self.vinnere.splice(0, 0, new Winner(vinner.navn));
 
             self.lagreDeltakere();
             self.lagreVinnere();
