@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Vintrekning</title>
+    <title>Raffle draw</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/app.css"/>
@@ -10,49 +10,47 @@
 <div class="container">
     <div class="hidden-lg">
         <ul class="nav nav-pills">
-            <li data-bind="css: { active: 'Deltakere' == $root.chosenTabId() }"><a href="#Deltakere">Deltakere</a></li>
-            <li data-bind="css: { active: 'Trekning' == $root.chosenTabId() }"><a href="#Trekning">Trekning</a></li>
+            <li data-bind="css: { active: 'Participants' == $root.chosenTabId() }"><a href="#Participants">Participants</a></li>
+            <li data-bind="css: { active: 'Drawing' == $root.chosenTabId() }"><a href="#Drawing">Draw</a></li>
         </ul>
     </div>
-    <div class="row">
-        <div id="trekningDiv" class="col-md-7 intimsone-under intimate-zone-over" style="display: none">
-            <button class="btn btn-success btn-lg" type="button" data-bind="click: trekk, enable: isDrawable()">Trekk
+    <div class="row intimate-zone-over">
+        <div id="drawingDiv" class="col-md-7 intimate-zone-under" style="display: none">
+            <button class="btn btn-success btn-lg" type="button" data-bind="click: draw, enable: isDrawable()">Draw
             </button>
 
-            <ul class="list-unstyled winnerlist" data-bind="foreach: {data: vinnere, afterAdd: slideDown}">
-                <li><span data-bind="text: navn"></span></li>
+            <ul class="list-unstyled winnerlist" data-bind="foreach: {data: winners, afterAdd: slideDown}">
+                <li><span data-bind="text: name"></span></li>
             </ul>
         </div>
-        <div id="deltakereDiv" class="col-md-5 intimsone-under" style="display: none">
-            <h2>Deltakere</h2>
-
-            <form data-bind="submit: addDeltakerFromForm" novalidate>
+        <div id="participantsDiv" class="col-md-5 intimate-zone-under" style="display: none">
+            <form data-bind="submit: addParticipantFromForm" novalidate>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <input type="text" class="form-control" name="navn" placeholder="Navn" autofocus/>
+                        <input type="text" class="form-control" name="name" placeholder="Name" autofocus/>
                     </div>
                     <div class="form-group col-md-4">
-                        <input type="number" class="form-control" name="antallLodd" placeholder="# lodd" required autocomplete="off"/>
+                        <input type="number" class="form-control" name="ticketCount" placeholder="# tickets" autocomplete="off"/>
                     </div>
                     <div class="col-md-1">
                         <button type="submit" class="btn btn-primary">+</button>
                     </div>
                 </div>
             </form>
-            <table class="table" data-bind="visible: deltakere().length > 0">
+            <table class="table" data-bind="visible: participants().length > 0">
                 <thead>
                 <tr>
-                    <td>Navn</td>
-                    <td># lodd</td>
+                    <td>Name</td>
+                    <td># tickets</td>
                     <td></td>
                 </tr>
                 </thead>
-                <tbody data-bind="foreach: deltakere">
+                <tbody data-bind="foreach: participants">
                 <tr>
-                    <td data-bind="text: navn"></td>
-                    <td data-bind="text: antallLodd"></td>
-                    <td><a data-bind="click: $root.fjernDeltaker" href="#">
-                        Fjern
+                    <td data-bind="text: name"></td>
+                    <td data-bind="text: ticketCount"></td>
+                    <td><a data-bind="click: $root.removeParticipant" href="#">
+                        Remove
                     </a></td>
                 </tr>
                 </tbody>
