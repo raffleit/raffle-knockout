@@ -7,7 +7,6 @@
             "knockout": "libs/knockout.js/knockout",
             "underscore": "libs/underscore/underscore",
             "sammy": "libs/sammy/lib/sammy"
-
         },
         "shim": {
             "jquery": {
@@ -25,11 +24,8 @@
         }
     });
 
-    define(['knockout', 'app', 'sammy'], function (ko, AppViewModel, Sammy) {
+    define(['knockout', 'app', 'sammy', 'hammer'], function (ko, AppViewModel, Sammy) {
         var appViewModel = new AppViewModel();
-
-        var md = window.matchMedia("(min-width: 970px) and (max-width: 1170px)").matches;
-        var lg = window.matchMedia("(min-width: 1170px)").matches;
 
         var $participantsDiv = $("#participantsDiv");
         var $drawingDiv = $("#drawingDiv");
@@ -43,9 +39,6 @@
                 } else if (this.params.tab === "Participants") {
                     $drawingDiv.hide();
                     $participantsDiv.show();
-                } else if (this.params.tab === "Full") {
-                    $drawingDiv.show();
-                    $participantsDiv.show();
                 }
             });
 
@@ -54,11 +47,7 @@
             };
 
             this.get('', function () {
-                if (lg || md) {
-                    this.app.runRoute('get', '#Full');
-                } else {
-                    this.app.runRoute('get', '#Participants');
-                }
+                this.app.runRoute('get', '#Participants');
             });
         }).run();
         ko.applyBindings(appViewModel);
