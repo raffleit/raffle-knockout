@@ -24,7 +24,7 @@
         }
     });
 
-    define(['knockout', 'app', 'sammy', 'hammer'], function (ko, AppViewModel, Sammy) {
+    define(['knockout', 'app', 'sammy'], function (ko, AppViewModel, Sammy) {
         var appViewModel = new AppViewModel();
 
         var $participantsDiv = $("#participantsDiv");
