@@ -30,7 +30,7 @@ jobs:
       - run: git checkout master .circleci
       - run: git config --global user.email "andersems@gmail.com"
       - run: git config --global user.name "Anders Emil Salvesen"
-      - run: echo react.raffleit.abbsnabb.com > CNAME
+      - run: echo knockout.raffleit.abbsnabb.com > CNAME
       - run: git add .
       - run: git commit -m "Github pages"
       - run: git push origin gh-pages --force
