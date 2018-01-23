@@ -15,17 +15,20 @@ module.exports = function (grunt) {
             }
         },
 
-        requirejs: {
-            compile: {
-                options: {
-                    appDir: "app",
-                    baseUrl: "js",
-                    name: "main",
-                    mainConfigFile: "app/js/main.js",
-                    optimize: "uglify",
-                    dir: "build",
-                    skipDirOptimize: true
+        browserify: {
+            dist: {
+                files: {
+                    'build/app.js': ['app/js/app.js', 'app/js/drawUtils.js', 'app/js/main.js']
                 }
+            }
+        },
+
+        copy: {
+            files: {
+                cwd: 'app',
+                src: ['css/**/*', '**/*.png', '**/*.html', '**/*.webapp'],
+                dest: 'build',
+                expand: true
             }
         },
 
@@ -54,8 +57,9 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-requirejs');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-htmlhint');
+    grunt.loadNpmTasks('grunt-browserify');
 
-    grunt.registerTask('default', ['htmlhint', 'jshint', 'requirejs']);
-}
+    grunt.registerTask('default', ['htmlhint', 'jshint', 'browserify', 'copy']);
+};
