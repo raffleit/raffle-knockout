@@ -1,8 +1,6 @@
 # Raffle It! Knockout &middot; [![CircleCI](https://circleci.com/gh/raffleit/raffleit-knockout.svg?style=shield)](https://circleci.com/gh/raffleit/raffleit-knockout) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/raffleit/raffleit-knockout/blob/master/LICENSE)
 
-This is an implementation of Raffle It! in Knockout. This was my first implementation of it, and much has changed since. I'm using `requirejs` for modules, and I've even downloaded the libs by hand.
-
-A lot could be done to make the infrastructure of this app up-to-date, but the actual knockout-part of the code stands its time. Check `app.js`.
+This is an implementation of Raffle It! in Knockout. This was my first implementation of it, and much has changed since. I recently moved from requirejs to browserify because I didn't understand AMD anymore.
 
 ## Pros and Cons (Purely Subjective)
 
