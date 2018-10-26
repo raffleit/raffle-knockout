@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Raffle draw</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="https://raffleit.github.io/raffleit-css/raffleit.css"/>
+    <link rel="stylesheet" type="text/css" href="css/app.css"/>
+</head>
+<body>
+<div class="container">
+    <div>
+        <ul class="nav nav-pills">
+            <li data-bind="css: { active: 'Participants' == $root.chosenTabId() }"><a href="#Participants">Participants</a></li>
+            <li data-bind="css: { active: 'Drawing' == $root.chosenTabId() }"><a href="#Drawing">Draw</a></li>
+        </ul>
+    </div>
+    <div class="row intimate-zone-over">
+        <div id="drawingDiv" class="col-md-7 intimate-zone-under" style="display: none">
+            <button class="btn btn-success btn-lg" type="button" data-bind="click: draw, enable: isDrawable()">Draw
+            </button>
+
+            <ul class="list-unstyled winnerlist" data-bind="foreach: {data: winners, afterAdd: slideDown}">
+                <li><span data-bind="text: name"></span></li>
+            </ul>
+        </div>
+        <div id="participantsDiv" class="col-md-5 intimate-zone-under" style="display: none">
+            <form data-bind="submit: addParticipantFromForm" novalidate>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <input type="text" class="form-control" name="name" placeholder="Name" autofocus/>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="number" class="form-control" name="ticketCount" placeholder="# tickets" autocomplete="off"/>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="submit" class="btn btn-primary">+</button>
+                    </div>
+                </div>
+            </form>
+            <table class="table" data-bind="visible: participants().length > 0">
+                <thead>
+                <tr>
+                    <td>Name</td>
+                    <td># tickets</td>
+                    <td></td>
+                </tr>
+                </thead>
+                <tbody data-bind="foreach: participants">
+                <tr>
+                    <td data-bind="text: name"></td>
+                    <td data-bind="text: ticketCount"></td>
+                    <td><a data-bind="click: $root.removeParticipant" href="#">
+                        Remove
+                    </a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="reset"><a href="#" data-bind="click: $root.reset">Reset</a></div>
+
+<script src="app.js"></script>
+</body>
+</html>

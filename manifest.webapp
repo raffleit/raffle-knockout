@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "name": "Raffle drawing",
+  "description": "Small and simple app for raffle drawing",
+  "launch_path": "/index.html",
+  "icons": {
+    "16": "/icon_016.png",
+    "48": "/icon_048.png",
+    "128": "/icon_128.png"
+  },
+  "developer": {
+    "name": "Anders Emil Salvesen",
+    "url": "http://abbsnabb.com"
+  },
+  "default_locale": "en"
+}
