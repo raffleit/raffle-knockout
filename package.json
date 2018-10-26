@@ -12,16 +12,13 @@
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-jshint": "0.8.x",
     "grunt-contrib-watch": "0.5.x",
-    "grunt-htmlhint": "*"
+    "grunt-htmlhint": "*",
+    "node-static": "^0.7.11"
   },
   "dependencies": {
     "jquery": "^3.3.1",
-    "knockout": "^3.5.0-beta",
-    "lodash": "^4.17.4",
-    "node-static": "^0.7.6",
+    "knockout": "^3.5.0-rc2",
+    "lodash": "^4.17.11",
     "sammy": "^0.7.6"
-  },
-  "engines": {
-    "node": "0.11.x"
   }
 }
